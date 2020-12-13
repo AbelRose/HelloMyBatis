@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.matrix.day01.mapper.UserMapper"> <!-- 第一个绑定: 映射文件和接口进行绑定-->
+
+    <!--
+        <select>:定义查询语句
+        id:设置SQL语句的唯一标示
+        resultType:结果类型，即实体类的全限定名
+     -->
+    <select id="getUserByUid" resultType="com.matrix.day01.bean.User">  <!-- 第二个绑定: getUserByUid 和 方法名进行绑定 执行接口中的放方法时就会找代这里 执行SQL语句 resultType 是查询结果的类型必须是全限定名-->
+		select uid,user_name,password,age,sex from user where uid = ${value}
+	</select>
+
+</mapper>
