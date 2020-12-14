@@ -26,7 +26,8 @@
             type:Java 类型，若只设置type，默认的别名就是类型，且不区分大小写
          -->
         <!-- <typeAlias type="com.matrix.day01.bean.User" alias="u"/> -->
-        <package name="com.matrix.day01.bean"/>
+<!--        <package name="com.matrix.day01.bean"/>-->
+        <package name="com.matrix.day02.bean"/>
     </typeAliases>
 
     <!--
@@ -39,7 +40,7 @@
             id:数据库环境的唯一标示
          -->
         <environment id="mysql">
-            <!-- type="JDBC|MANAGED" -->
+            <!-- type="JDBC|MANAGED"，JDBC：使用JDBC原生的事务管理方式，即提交和回滚都需要手动处理 必须得commit-->
             <transactionManager type="JDBC" />
             <!-- type="POOLED|UNPOOLED|JNDI" -->
             <dataSource type="POOLED">
@@ -63,7 +64,10 @@
 
     <!-- 引入映射文件 注册功能-->
     <mappers>
-        <mapper resource="UserMapper.xml" />
+        <!-- <mapper resource="EmpMapper.xml" />
+        <mapper resource="DeptMapper.xml" /> -->
+        <!-- 此种写法要求mapper接口和mapper映射文件必须在同一个包下 -->
+        <package name="com.matrix.mapper"/>
     </mappers>
 
 </configuration>

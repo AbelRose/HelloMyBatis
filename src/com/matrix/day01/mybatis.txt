@@ -1,0 +1,17 @@
+mybatis搭建过程：
+1、导入jar
+2、创建mybatis的核心（全局）配置文件mybatis-config.xml，并配置
+3、创建映射文件XxxMapper.xml，并配置
+4、创建mapper接口，实现两个绑定:
+	(1)接口全限定名要和映射文件的namespace保持一致
+	(2)接口中方法名和SQL语句的id保持一致
+5、获取mybatis操作数据库的会话对象SqlSession，通过getMapper()获取接口的动态代理实现类
+6、测试
+
+
+
+xml的提示功能：
+1、联网
+2、配置：xml->xmlCatalog-->add
+（1）PUBLIC ID:-//mybatis.org//DTD Config 3.0//EN
+（2）URI:http://mybatis.org/dtd/mybatis-3-config.dtd
