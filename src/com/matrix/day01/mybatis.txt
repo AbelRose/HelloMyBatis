@@ -8,6 +8,14 @@ mybatis搭建过程：
 5、获取mybatis操作数据库的会话对象SqlSession，通过getMapper()获取接口的动态代理实现类
 6、测试
 
+mybatis获取参数值的俩种方式
+${} Statement 必须使用字符串拼接的方式操作SQL 要注意单引号的问题
+#{} PreStatement 可以使用通配符的方式操作SQL 可以自动加单引号 因此不必考虑单引号问题
+
+    命名参数
+    可以通过@Param("key")为map集合指定键的名字
+    Emp getEmpByEidAndEnameByParam(@Param("eid") String eid, @Param("ename") String ename);
+    
 
 
 xml的提示功能：
