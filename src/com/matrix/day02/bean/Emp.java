@@ -7,6 +7,26 @@ public class Emp {
     private Integer age;
     private String sex;
 
+    private Dept dept;
+
+    @Override
+    public String toString() {
+        return "Emp{" +
+                "eid=" + eid +
+                ", ename='" + ename + '\'' +
+                ", age=" + age +
+                ", sex='" + sex + '\'' +
+                ", dept=" + dept +
+                '}';
+    }
+
+    public Dept getDept() {
+        return dept;
+    }
+
+    public void setDept(Dept dept) {
+        this.dept = dept;
+    }
 
     public Emp() {
     }
@@ -50,13 +70,4 @@ public class Emp {
         this.sex = sex;
     }
 
-    @Override
-    public String toString() {
-        return "Emp{" +
-                "eid=" + eid +
-                ", ename='" + ename + '\'' +
-                ", age=" + age +
-                ", sex='" + sex + '\'' +
-                '}';
-    }
 }

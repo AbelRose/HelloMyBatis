@@ -6,6 +6,9 @@
 
 <mapper namespace="com.matrix.day02.mapper.DeptMapper"> <!-- 第一个绑定: 映射文件和接口进行绑定-->
 
-
+    <!-- Dept getDeptByDid(String did); -->
+    <select id="getDeptByDid" resultType="Dept">
+		select did,dname from dept where did = #{did}
+	</select>
 
 </mapper>
