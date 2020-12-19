@@ -4,94 +4,266 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  
  
-<mapper namespace="com.matrix.day02.mapper.EmpDeptMapper">
-	
-	<!-- <resultMap type="Emp" id="empMap">
-		<id column="eid" property="eid"/>
-		<result column="ename" property="ename"/>
-		<result column="age" property="age"/>
-		<result column="sex" property="sex"/>
-		<result column="did" property="dept.did"/>
-		<result column="dname" property="dept.dname"/>
-	</resultMap> -->
-	
-	<!-- 
-		<resultMap>：自定义映射，处理复杂的表关系
-		<id column="eid" property="eid"/>
-		<id>：设置主键的映射关系，column设置字段名，property设置属性名
-		<result column="ename" property="ename"/>
-		<result>：设置非主键的映射关系，column设置字段名，property设置属性名
+<!-- <mapper namespace="com.matrix.day02.mapper.EmpDeptMapper">-->
+<!--	-->
+<!--	&lt;!&ndash; <resultMap type="Emp" id="empMap">-->
+<!--		<id column="eid" property="eid"/>-->
+<!--		<result column="ename" property="ename"/>-->
+<!--		<result column="age" property="age"/>-->
+<!--		<result column="sex" property="sex"/>-->
+<!--		<result column="did" property="dept.did"/>-->
+<!--		<result column="dname" property="dept.dname"/>-->
+<!--	</resultMap> &ndash;&gt;-->
+<!--	-->
+<!--	&lt;!&ndash; -->
+<!--		<resultMap>：自定义映射，处理复杂的表关系-->
+<!--		<id column="eid" property="eid"/>-->
+<!--		<id>：设置主键的映射关系，column设置字段名，property设置属性名-->
+<!--		<result column="ename" property="ename"/>-->
+<!--		<result>：设置非主键的映射关系，column设置字段名，property设置属性名-->
+<!--	 &ndash;&gt;-->
+<!--	<resultMap type="Emp" id="empMap">-->
+<!--		<id column="eid" property="eid"/>-->
+<!--		<result column="ename" property="ename"/>-->
+<!--		<result column="age" property="age"/>-->
+<!--		<result column="sex" property="sex"/>-->
+<!--		<association property="dept" javaType="Dept">-->
+<!--			<id column="did" property="did"/>-->
+<!--			<result column="dname" property="dname"/>-->
+<!--		</association>-->
+<!--	</resultMap>-->
+<!--	-->
+<!--	&lt;!&ndash; List<Emp> getAllEmp(); &ndash;&gt;-->
+<!--	<select id="getAllEmp" resultMap="empMap">-->
+<!--		select e.eid,e.ename,e.age,e.sex,e.did,d.dname from emp e left join dept d on e.did = d.did-->
+<!--	</select>-->
+<!--	-->
+<!--	&lt;!&ndash; -->
+<!--		<resultMap>：自定义映射，处理复杂的表关系-->
+<!--	 &ndash;&gt;-->
+<!--	<resultMap type="Emp" id="empMapStep">-->
+<!--		<id column="eid" property="eid"/>-->
+<!--		<result column="ename" property="ename"/>-->
+<!--		<result column="age" property="age"/>-->
+<!--		<result column="sex" property="sex"/>-->
+<!--		&lt;!&ndash; -->
+<!--			select:分步查询的SQL的id，即接口的全限定名.方法名或namespace.SQL的id-->
+<!--			column:分步查询的条件，注意：此条件必须是从数据库查询过得-->
+<!--		 &ndash;&gt;-->
+<!--		<association property="dept" select="com.matrix.day02.mapper.DeptMapper.getDeptByDid" column="did"/>-->
+<!--	</resultMap>-->
+<!--	-->
+<!--	&lt;!&ndash; Emp getEmpStep(String eid); &ndash;&gt;-->
+<!--	<select id="getEmpStep" resultMap="empMapStep">-->
+<!--		select eid,ename,age,sex,did from emp where eid = #{eid}-->
+<!--	</select>-->
+<!--	-->
+<!--	<resultMap type="Dept" id="deptMap">-->
+<!--		<id column="did" property="did"/>-->
+<!--		<result column="dname" property="dname"/>-->
+<!--		&lt;!&ndash; -->
+<!--			<collection>:处理一对多和多对多的关系-->
+<!--			ofType：指集合中的类型，不需要指定javaType-->
+<!--		 &ndash;&gt;-->
+<!--		<collection property="emps" ofType="Emp">-->
+<!--			<id column="eid" property="eid"/>-->
+<!--			<result column="ename" property="ename"/>-->
+<!--			<result column="age" property="age"/>-->
+<!--			<result column="sex" property="sex"/>-->
+<!--		</collection>-->
+<!--	</resultMap>-->
+<!--	-->
+<!--	&lt;!&ndash; Dept getDeptEmpsByDid(String did); &ndash;&gt;-->
+<!--	<select id="getDeptEmpsByDid" resultMap="deptMap">-->
+<!--		select d.did,d.dname,e.eid,e.ename,e.age,e.sex from dept d left join emp e on d.did = e.did where d.did = #{did}-->
+<!--	</select>-->
+<!--	-->
+<!--	&lt;!&ndash; List<Emp> getEmpListByDid(String did); &ndash;&gt;-->
+<!--	<select id="getEmpListByDid" resultType="Emp">-->
+<!--		select eid,ename,age,sex from emp where did = #{did}-->
+<!--	</select>-->
+<!--	-->
+<!--	<resultMap type="Dept" id="deptMapStep">-->
+<!--		<id column="did" property="did"/>-->
+<!--		<result column="dname" property="dname"/>-->
+<!--		<collection property="emps" select="com.matrix.day02.mapper.EmpDeptMapper.getEmpListByDid" column="{did=did}" fetchType="eager"></collection>-->
+<!--	</resultMap>-->
+<!--	-->
+<!--	&lt;!&ndash; Dept getOnlyDeptByDid(String did); &ndash;&gt;-->
+<!--	<select id="getOnlyDeptByDid" resultMap="deptMapStep">-->
+<!--		select did,dname from dept where did = #{did}-->
+<!--	</select>-->
+<!--	-->
+<!--</mapper> &ndash;&gt;-->
+
+<!-- day03 -->
+<mapper namespace="com.matrix.day03.mapper.EmpMapper">
+
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache" />
+
+	<!--
+		<sql id=""></sql>：设置一段SQL片段，即公共SQL，可以被当前映射文件中所有的SQL语句所访问
+		<include refid="empColumns"></include>：访问某个SQL片段
 	 -->
-	<resultMap type="Emp" id="empMap">
-		<id column="eid" property="eid"/>
-		<result column="ename" property="ename"/>
-		<result column="age" property="age"/>
-		<result column="sex" property="sex"/>
-		<association property="dept" javaType="Dept">
-			<id column="did" property="did"/>
-			<result column="dname" property="dname"/>
-		</association>
-	</resultMap>
-	
-	<!-- List<Emp> getAllEmp(); -->
-	<select id="getAllEmp" resultMap="empMap">
-		select e.eid,e.ename,e.age,e.sex,e.did,d.dname from emp e left join dept d on e.did = d.did
+	<sql id="empColumns">select eid,ename,age,sex,did from emp </sql>
+
+	<!-- Emp getEmpByEid(String eid); -->
+	<select id="getEmpByEid" resultType="Emp">
+		<include refid="empColumns"></include> where eid = #{eid}
 	</select>
-	
-	<!-- 
-		<resultMap>：自定义映射，处理复杂的表关系
+
+	<!--
+		<if test=""></if>：通过test表达式，拼接SQL
+		<where>：添加where关键字，同时去掉多余的and
+		<trim prefix="" suffix="" prefixOverrides="" suffixOverrides="">：截取并拼接
+		prefix：在操作的SQL语句前加入某些内容
+		suffix：在操作的SQL语句后加入某些内容
+		prefixOverrides：把操作的SQL语句前的某些内容去掉
+		suffixOverrides：把操作的SQL语句后的某些内容去掉
 	 -->
-	<resultMap type="Emp" id="empMapStep">
-		<id column="eid" property="eid"/>
-		<result column="ename" property="ename"/>
-		<result column="age" property="age"/>
-		<result column="sex" property="sex"/>
-		<!-- 
-			select:分步查询的SQL的id，即接口的全限定名.方法名或namespace.SQL的id
-			column:分步查询的条件，注意：此条件必须是从数据库查询过得
-		 -->
-		<association property="dept" select="com.matrix.day02.mapper.DeptMapper.getDeptByDid" column="did"/>
-	</resultMap>
-	
-	<!-- Emp getEmpStep(String eid); -->
-	<select id="getEmpStep" resultMap="empMapStep">
-		select eid,ename,age,sex,did from emp where eid = #{eid}
+
+	<!-- List<Emp> getEmpListByMoreTJ();多条件查询：若页面中没有设置此条件，SQL语句中一定不能有该条件 -->
+	<select id="getEmpListByMoreTJ" resultType="Emp">
+		<include refid="empColumns"></include>
+		<trim prefix="where" suffixOverrides="and|or">
+			<if test="eid != null">
+				eid = #{eid} and
+			</if>
+			<if test="ename != null and ename != ''">
+				ename = #{ename} and
+			</if>
+			<if test="age != null">
+				age = #{age} or
+			</if>
+			<if test="sex == 1 or sex == 0">
+				sex = #{sex}
+			</if>
+		</trim>
 	</select>
-	
-	<resultMap type="Dept" id="deptMap">
-		<id column="did" property="did"/>
-		<result column="dname" property="dname"/>
-		<!-- 
-			<collection>:处理一对多和多对多的关系
-			ofType：指集合中的类型，不需要指定javaType
-		 -->
-		<collection property="emps" ofType="Emp">
-			<id column="eid" property="eid"/>
-			<result column="ename" property="ename"/>
-			<result column="age" property="age"/>
-			<result column="sex" property="sex"/>
-		</collection>
-	</resultMap>
-	
-	<!-- Dept getDeptEmpsByDid(String did); -->
-	<select id="getDeptEmpsByDid" resultMap="deptMap">
-		select d.did,d.dname,e.eid,e.ename,e.age,e.sex from dept d left join emp e on d.did = e.did where d.did = #{did}
+
+	<select id="getEmpListByMoreTJ1" resultType="Emp">
+		select eid,ename,age,sex,did from emp
+		<where>
+			<if test="eid != null">
+				and eid = #{eid}
+			</if>
+			<if test="ename != null and ename != ''">
+				and ename = #{ename}
+			</if>
+			<if test="age != null">
+				and age = #{age}
+			</if>
+			<if test="sex == 1 or sex == 0">
+				and sex = #{sex}
+			</if>
+		</where>
 	</select>
-	
-	<!-- List<Emp> getEmpListByDid(String did); -->
-	<select id="getEmpListByDid" resultType="Emp">
-		select eid,ename,age,sex from emp where did = #{did}
+
+	<!--
+		<choose>：选择某一个when或otherwise拼接SQL
+			<when test=""></when>：通过test表达式拼接SQL
+			.
+			.
+			.
+			<otherwise></otherwise>：当when都不符合条件，就会选择otherwise拼接SQL
+		</choose>
+	 -->
+
+	<!-- List<Emp> getEmpListByChoose(Emp emp); -->
+	<select id="getEmpListByChoose" resultType="Emp">
+		select eid,ename,age,sex from emp
+		where
+		<choose>
+			<when test="eid != null">
+				eid = #{eid}
+			</when>
+			<when test="ename != null and ename != ''">
+				ename = #{ename}
+			</when>
+			<when test="age != null">
+				age = #{age}
+			</when>
+			<otherwise>
+				sex = #{sex}
+			</otherwise>
+		</choose>
 	</select>
-	
-	<resultMap type="Dept" id="deptMapStep">
-		<id column="did" property="did"/>
-		<result column="dname" property="dname"/>
-		<collection property="emps" select="com.matrix.day02.mapper.EmpDeptMapper.getEmpListByDid" column="{did=did}" fetchType="eager"></collection>
-	</resultMap>
-	
-	<!-- Dept getOnlyDeptByDid(String did); -->
-	<select id="getOnlyDeptByDid" resultMap="deptMapStep">
-		select did,dname from dept where did = #{did}
-	</select>
-	
+
+	<!-- void insertEmp(Emp emp); -->
+	<insert id="insertEmp">
+		insert into emp(eid,ename,age,sex) values(
+		null,
+		#{ename},
+		#{age},
+		<choose>
+			<when test="sex == 0">'女'</when>
+			<when test="sex == 1">'男'</when>
+			<otherwise>'不详'</otherwise>
+		</choose>
+		)
+	</insert>
+
+	<!-- void deleteMoreEmp(String eids); -->
+	<delete id="deleteMoreEmp">
+		delete from emp where eid in (${value})
+	</delete>
+
+	<!--
+		<foreach collection="" item="" close="" open="" separator="" index=""></foreach>
+		对一个数组或集合进行遍历
+		collection：指定要遍历的集合或数组
+		item：设置别名
+		close：设置循环体的结束内容
+		open：设置循环体的开始内容
+		separator：设置每一次循环之间的分隔符
+		index：若遍历的是list，index代表下标；若遍历的是map，index代表键
+	 -->
+
+	<!-- void deleteMoreByList(List<Integer> eids); -->
+	<!--
+		delete from emp where eid in ();
+		delete from emp where eid = 1 or eid = 2 or eid = 3
+	 -->
+	<delete id="deleteMoreByList">
+		delete from emp where eid in
+		<foreach collection="eids" item="eid" separator="," open="(" close=")">
+			#{eid}
+		</foreach>
+	</delete>
+
+	<!--
+		delete：
+			delete from emp where eid in ();
+			delete from emp where eid = 1 or eid = 2 or eid = 3
+		select：
+			select * from emp where eid in ();
+			select * from emp where eid = 1 or eid = 2 or eid = 3
+		update：
+			把每条数据修改为相同内容
+			update emp set ... where eid in ();
+			update emp set ... where eid = 1 or eid = 2 or eid = 3
+			把每条数据修改为对应内容，注意：必须在连接地址（url）后添加参数?allowMultiQueries=true
+			update emp set ... where eid = 1;
+			update emp set ... where eid = 2;
+			update emp set ... where eid = 3
+		insert
+			insert into emp values(),(),()
+	 -->
+
+	<!-- void insertMoreByArray(Emp[] emps); -->
+	<insert id="insertMoreByArray">
+		insert into emp values
+		<foreach collection="emps" item="emp" separator=",">
+			(null,#{emp.ename},#{emp.age},#{emp.sex},1)
+		</foreach>
+	</insert>
+
+	<!-- void updateMoreByArray(@Param("emps")Emp[] emps); -->
+	<update id="updateMoreByArray">
+		<foreach collection="emps" item="emp">
+			update emp set ename = #{emp.ename}, age = #{emp.age}, sex = #{emp.sex} where eid = #{emp.eid};
+		</foreach>
+	</update>
+
+
 </mapper>
