@@ -1,0 +1,38 @@
+SSM整合步骤：
+1、导入jar
+	spring:
+	springMVC:
+	mybatis:
+	第三方支持:log4j,pageHelper,AspectJ,jackson,jstl
+2、搭建springMVC
+	(1)web.xml:
+		DispatcherServlet
+		HiddenHttpMethodFilter
+		CharacterEncodingFilter
+	(2)springMVC.xml:
+		扫描控制层组件
+		视图解析器
+		Default Servlet
+		MVC驱动
+		可选：MultipartResolver，拦截器
+3、整合springMVC和spring
+	(1)web.xml:
+		ContextLoaderListener
+		context-param
+	(2)spring.xml:
+		扫描组件（排除控制层）
+4、搭建mybatis:
+	核心配置文件
+	mapper接口和mapper映射文件
+5、spring整合mybatis
+	spring.xml:
+		properties文件的引入
+		DataSource数据源的配置
+		事务管理器
+		开启事务驱动
+		SqlSessionFactoryBean：管理SqlSession
+		MapperScannerConfigurer
+6、REST CRUD
+	查询+分页
+	修改（form）
+

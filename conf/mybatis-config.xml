@@ -34,8 +34,14 @@
          -->
         <!-- <typeAlias type="com.matrix.day01.bean.User" alias="u"/> -->
 <!--        <package name="com.matrix.day01.bean"/>-->
-        <package name="com.matrix.day02.bean"/>
+<!--        <package name="com.matrix.day02.bean"/>-->
+        <package name="com.matrix.day04.bean"/>
     </typeAliases>
+
+
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
+    </plugins>
 
     <!--
         <environments>:设置连接数据库的环境
